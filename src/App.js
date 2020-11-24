@@ -1,14 +1,16 @@
-import logo from './logo.svg';
-import Scoreboard from './components/scoreboard.jsx';
-import Header from './components/header.jsx'
+// import logo from './logo.svg';
+import Header from './components/header.jsx';
+import Game from './components/game.jsx'
+
+
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <>
       <Header />
-      <Scoreboard />
-    </div>
+      <Game />
+    </>
   );
 }
 
