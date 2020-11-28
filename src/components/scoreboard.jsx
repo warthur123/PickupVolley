@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './scoreboard.css';
 
 class Scoreboard extends Component {
   constructor(props) {
@@ -9,31 +10,29 @@ class Scoreboard extends Component {
 
   render() {
     return (
-      <div style={{ width: '800px', margin: '0 auto' }}>
-        <div className="scoreboard-wrapper" style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div className="left-score" style={{}}>
-            <span style={{ fontSize: '90px' }}>{this.props.leftscore}</span>
+      <div className="scoreboard-wrapper">
+        <div className="scores">
+          <div className="left-score">
+            <span>{this.props.leftscore}</span>
 
           </div>
           <div className="right-score">
-            <span style={{ fontSize: '90px' }}>{this.props.rightscore}</span>
+            <span>{this.props.rightscore}</span>
 
           </div>
         </div>
 
-        <div className="add-subtract" style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button onClick={() => this.props.onSubLeft()}>-</button>
-            <button onClick={() => this.props.onAddLeft()}>+</button>
+        <div className="add-subtract">
+          <div>
+            <button className="sub-left" onClick={() => this.props.onSubLeft()}>-</button>
+            <button className="add-left" onClick={() => this.props.onAddLeft()}>+</button>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <button onClick={() => this.props.onSubRight()}>-</button>
-            <button onClick={() => this.props.onAddRight()}>+</button>
+          <div>
+            <button className="sub-right" onClick={() => this.props.onSubRight()}>-</button>
+            <button className="add-right" onClick={() => this.props.onAddRight()}>+</button>
           </div>
         </div>
-        
-        <button onClick={() => this.props.onResetScore()}>reset</button>
       </div>
     );
   }

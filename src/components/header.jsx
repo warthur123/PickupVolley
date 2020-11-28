@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import './header.css'
 
 
 class Header extends Component {
     render() { 
         return ( 
             <div className="header">
-                <h1>Volleyball Game Score</h1>
+                <h1>Pickup Volleyball Score Keeper</h1>
+                <span>By Arthur Wu</span>
             </div>
          );
     }

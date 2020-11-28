@@ -1,43 +1,42 @@
 import React, { Component } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import Team from './team.jsx'
 import Scoreboard from './scoreboard.jsx';
+import './game.css';
 
 class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
             teams: [
-                { id: 0, name: 't1' },
-                { id: 1, name: 't2' },
-                { id: 2, name: 't3' }],
+                ],
             score: { leftscore: 0, rightscore: 0 },
             name: '',
 
         };
-
     }
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        const data = new FormData(event.target);
+        
+        console.log(data.get('team-name'));
 
-    addHandler = (e) => {
-        let newlist = this.state.teams;
-
-        if (this.state.teams.length === 0) {
-            let nextID = 0;
-            newlist.push({ id: nextID, name: this.state.name });
-            this.setState({ teams: newlist });
-        } else {
-            let nextID = newlist[newlist.length - 1].id + 1;
-            newlist.push({ id: nextID, name: this.state.name });
-            this.setState({ teams: newlist });
-        }
-
-    }
-
-    handleNewTeam = (e) => {
-        if (e.target.value !== '') {
-            this.setState({ name: e.target.value });
+        if (data.get('team-name') !== '') {
+            let newlist = this.state.teams;
+            if (this.state.teams.length === 0) {
+                let nextID = 0;
+                newlist.push({ id: nextID, name: data.get('team-name') });
+                this.setState({ teams: newlist });
+            } else {
+                let nextID = Math.max.apply(Math, newlist.map(function (t) { return t.id; })) + 1;
+                newlist.push({ id: nextID, name: data.get('team-name') });
+                this.setState({ teams: newlist });
+            }
+            document.getElementById("form").reset();
         }
     }
+
 
     deleteHandler = (teamID) => {
         const newList = this.state.teams.filter(curr => curr.id !== teamID);
@@ -56,27 +55,39 @@ class Game extends Component {
 
 
     addLeft = () => {
-        if (this.state.score.leftscore < 25) {
-            this.setState({ score: { leftscore: this.state.score.leftscore + 1, rightscore: this.state.score.rightscore } });
+        const left = this.state.score.leftscore;
+        const right = this.state.score.rightscore;
+
+        if (left < right + 1 || left < 25) {
+            this.setState({ score: { leftscore: left + 1, rightscore: right } });
         }
     };
 
     subLeft = () => {
-        if (this.state.score.leftscore > 0) {
-            this.setState({ score: { leftscore: this.state.score.leftscore - 1, rightscore: this.state.score.rightscore } });
+        const left = this.state.score.leftscore;
+        const right = this.state.score.rightscore;
+
+        if (left > 0) {
+            this.setState({ score: { leftscore: left - 1, rightscore: right } });
         }
     };
 
     addRight = () => {
-        if (this.state.score.rightscore < 25) {
-            this.setState({ score: { leftscore: this.state.score.leftscore, rightscore: this.state.score.rightscore + 1 } });
+        const left = this.state.score.leftscore;
+        const right = this.state.score.rightscore;
+
+        if (right < left + 1 || right < 25) {
+            this.setState({ score: { leftscore: left, rightscore: right + 1 } });
         }
     };
 
 
     subRight = () => {
+        const left = this.state.score.leftscore;
+        const right = this.state.score.rightscore;
+
         if (this.state.score.rightscore > 0) {
-            this.setState({ score: { leftscore: this.state.score.leftscore, rightscore: this.state.score.rightscore - 1 } });
+            this.setState({ score: { leftscore: left, rightscore: right - 1 } });
         }
     };
 
@@ -84,31 +95,93 @@ class Game extends Component {
         this.setState({ score: { leftscore: 0, rightscore: 0 } });
     };
 
+    handleOnDragEnd = (result) => {
+        if (result.destination !== null) {
+            const sourceIndex = result.source.index;
+            const destinationIndex = result.destination.index;
+
+            const newList = this.resortTeams(sourceIndex, destinationIndex);
+
+            this.setState({ teams: newList });
+        }
+
+    };
+
+    // element at source index placed in destination index. return new sorted array
+    resortTeams(source, destination) {
+        let result = [];
+        const sourceContent = this.state.teams[source];
+
+        if (source === destination) {
+            return this.state.teams;
+        } else if (source > destination) {
+            const end = this.state.teams.slice(destination, this.state.teams.length).filter(t => t !== sourceContent);
+            result = this.state.teams.slice(0, destination);
+            result.push(sourceContent);
+            return result.concat(end);
+        } else {
+            const noSource = this.state.teams.filter(t => t !== sourceContent);
+            result = noSource.slice(0, destination);
+            result.push(sourceContent);
+            return result.concat(noSource.slice(destination, noSource.length));
+        }
+    }
+
     render() {
-        console.log('gamescore', this.state.score);
+
         return (
-            <div className="game">
+            <div className="game-wrapper">
+
                 <Scoreboard leftscore={this.state.score.leftscore}
                     rightscore={this.state.score.rightscore}
                     onAddLeft={this.addLeft}
                     onSubLeft={this.subLeft}
                     onAddRight={this.addRight}
-                    onSubRight={this.subRight}
-                    onResetScore={this.handleResetScore} />
+                    onSubRight={this.subRight} />
 
-
-                <div className="add-team-form">
-                    <form onSubmit={this.handleSubmit}>
-                        <input type="text" name="team-name" onChange={this.handleNewTeam} />
-                    </form>
-                    <button onClick={this.addHandler}>add team</button>
+                <div className="reset-next">
+                    <button className="reset" onClick={this.handleResetScore}>Reset Score</button>
+                    <button className="next-game" onClick={this.handleNextGame}>Next Game</button>
                 </div>
 
-                <div className="teams" style={{width: '800px', margin: '0 auto', textAlign: 'center'}}>
-                    {this.state.teams.map(team => <Team key={team.id} team={team} onDelete={this.deleteHandler} />)}
+
+                <div className="teams">
+
+                    <span className="teams-label">Teams: </span>
+
+                    <DragDropContext onDragEnd={this.handleOnDragEnd}>
+                        <Droppable droppableId="teams-list">
+                            {(provided) => (
+                                <ul className="teams-list" {...provided.droppableProps} ref={provided.innerRef}>
+                                    {this.state.teams.map((team, index) => {
+                                        return (
+                                            <Draggable key={team.id.toString()} draggableId={team.id.toString()} index={index}>
+                                                {(provided) => (
+                                                    <li ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                                                        <Team key={team.id} team={team} onDelete={this.deleteHandler} />
+                                                    </li>
+                                                )}
+                                            </Draggable>
+                                        )
+                                    })}
+                                    {provided.placeholder}
+
+                                    
+                                    <li>
+                                        <div className="add-team-form">
+                                            <form onSubmit={this.handleSubmit} id="form">
+                                                <input className="add-team-input" type="text" name="team-name" id="team-name" maxLength='20' />
+                                                <button className="add-team-btn">Add Team</button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                </ul>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                 </div>
 
-                <button onClick={this.handleNextGame}>Next Game</button>
+
             </div>
         );
     }

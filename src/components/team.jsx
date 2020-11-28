@@ -9,10 +9,12 @@ class Team extends Component {
 
     render() {
         return (
-            <div>
-                <span>{this.state.name}</span>
-                <button onClick={() => this.props.onDelete(this.props.team.id)}>delete</button>
-            </div>
+            <>
+                <button type="button" className="close" aria-label="Close" style={{userSelect: 'none', marginRight: 8}} onClick={() => this.props.onDelete(this.props.team.id)}>
+                    &times;
+                </button>
+                <span style={{marginRight: 60}}>{this.state.name}</span>
+            </>
         );
     }
 }

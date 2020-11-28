@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+
+.scoreboard-wrapper {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.scores {
+    font-family: 'Oswald', sans-serif;
+    font-size: 200px;
+    margin-top: 0px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.left-score {
+    width: 300px;
+    text-align: center;
+    color: #ff5e5e;
+    user-select: none;
+}
+
+.right-score {
+    width: 300px;
+    text-align: center;
+    color: #4f78ff;
+    user-select: none;
+}
+
+.add-subtract {
+    display: flex;
+    justify-content: space-around;
+}
+
+.sub-left, .add-left {
+    border: none;
+    border-radius: 20px;
+    background-color: #ff5e5e;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    padding: 18px;
+    line-height: 15px;
+    user-select: none;
+}
+
+.sub-right, .add-right {
+    border: none;
+    border-radius: 20px;
+    background-color: #4f78ff;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    padding: 18px;
+    line-height: 15px;
+    user-select: none;
+}
+
+.sub-left, .sub-right {
+    margin-right: 10px;
+}
+
+

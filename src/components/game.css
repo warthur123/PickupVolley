@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+.game-wrapper {
+    width: 600px;
+    margin: 0 auto;
+}
+
+.add-team-form {
+    width: 600px;
+    display: flex;
+    margin-top: 10px;
+    justify-content: left;
+    display: inline-block;
+}
+
+.add-team-input {
+    width: 250px;
+    height: 35px;
+    margin-right: 10px;
+}
+.add-team-btn {
+    border: none;
+
+    margin-top: 10px;
+    height: 35px;
+    font-size: 15px;
+}
+
+.teams {
+    width: 400px;
+    margin: 40px auto;
+    font-size: 25px;
+    border: 1px black solid;
+    font-family: 'Varela Round', sans-serif;
+}
+
+.teams-label {
+    padding: 10px;
+}
+
+.teams ul {
+    list-style: none;
+}
+
+.teams ul li {
+    display: flex;
+    text-align: left;
+    justify-content: center;
+}
+
+.reset-next {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.reset {
+    border-radius: 20px;
+    border: none;
+    margin-right: 15px;
+    font-size: 16px;
+    padding: 13px 30px;
+    text-align: center;
+}
+
+.next-game {
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    padding: 13px 30px;
+    text-align: center;
+}
+
