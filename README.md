@@ -22,3 +22,4 @@ The are no prewritten tests in the source repository, but you can use Cypress to
 
 ### Future Development: 
 * Adding ability to change winning score from 25 points to 21 points
+* Connect and store all data in DB
